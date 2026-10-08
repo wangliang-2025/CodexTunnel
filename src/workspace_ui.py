@@ -1,4 +1,4 @@
-"""Additional workspace pages preserve the existing accessible Sakura components."""
+"""Additional workspace pages preserve the existing accessible components."""
 import copy
 import queue
 import statistics
@@ -556,3 +556,4 @@ def workspace_app(Base,C):
    if busy:self.after(100,self._finish_exit);return
    self.tray.stop();self.destroy()
  return WorkspaceApp
+

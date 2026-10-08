@@ -1,4 +1,4 @@
-"""Sakura desktop UI with main-thread events and truthful health indicators."""
+""" desktop UI with main-thread events and truthful health indicators."""
 import queue
 import threading
 import time
@@ -33,7 +33,7 @@ class App(ctk.CTk):
   ctk.set_appearance_mode(self.config.theme_mode)
   ctk.set_default_color_theme('blue')
   super().__init__()
-  self.title('CodexTunnel · 樱粉版')
+  self.title('CodexTunnel')
   # CTk applies monitor DPI scaling to logical geometry. Fit the monitor
   # rather than opening a 1025px-tall window on a 768px laptop display.
   scale=self._get_window_scaling()
@@ -101,7 +101,7 @@ class App(ctk.CTk):
   ctk.CTkFrame(sidebar,fg_color='transparent',height=1).pack(fill='both',expand=True)
   self.sidebar_state = self.label(sidebar,'●  待连接',14,True); self.sidebar_state.pack(pady=(12,6))
   self.button(sidebar,'切换明暗',self._theme).pack(fill='x',padx=16,pady=(4,12))
-  self.label(sidebar,'樱粉版  3.0.1',12,muted=True).pack(pady=(0,22))
+  self.label(sidebar,'版本  3.0.2',12,muted=True).pack(pady=(0,22))
   container = ctk.CTkFrame(self,fg_color='transparent'); container.grid(row=0,column=1,sticky='nsew',padx=26,pady=24)
   container.grid_columnconfigure(0,weight=1); container.grid_rowconfigure(0,weight=1)
   self.pages = {}
@@ -437,3 +437,4 @@ class App(ctk.CTk):
 
 from src.workspace_ui import workspace_app
 App = workspace_app(App, C)
+

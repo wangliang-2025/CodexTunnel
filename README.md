@@ -1,17 +1,17 @@
-# CodexTunnel 樱粉版 3.0.1
+# CodexTunnel 3.0.2
 
 Windows SSH 隧道与端口转发管理器。支持多服务器并发、结构化转发规则、分层探测、代理诊断与只读监控，粉色浅色/深色界面和简约隧道图标。
 
 ## 下载与首次配置
 
-从 [GitHub Releases](https://github.com/wangliang-2025/CodexTunnel/releases/latest) 下载 `CodexTunnel-v3.0.1.exe`，或下载便携 ZIP 后解压。EXE 已包含 Python 和 GUI 依赖，无需单独安装 Python。建议放在固定目录，例如 `D:\Apps\CodexTunnel\`；启用登录自启后不要随意移动该文件。
+从 [GitHub Releases](https://github.com/wangliang-2025/CodexTunnel/releases/latest) 下载 `CodexTunnel-v3.0.2.exe`，或下载便携 ZIP 后解压。EXE 已包含 Python 和 GUI 依赖，无需单独安装 Python。建议放在固定目录，例如 `D:\Apps\CodexTunnel\`；启用登录自启后不要随意移动该文件。
 
 运行环境：Windows 桌面、系统 OpenSSH 客户端。当前发布在 Windows x64 / Python 3.12 环境构建与验证；尚未验证 Windows ARM64 和其他平台。远端 SSH 转发要求服务器允许对应端口转发；仪表盘适用于提供 Python 3 与 `/proc` 的 Linux。
 
 发布附件包括版本化 EXE、便携 ZIP、`SHA256SUMS.txt`、`release.json`。GitHub 同时提供对应标签的源码 ZIP / tar.gz。可用 PowerShell 核验下载文件：
 
 ```powershell
-Get-FileHash .\CodexTunnel-v3.0.1.exe -Algorithm SHA256
+Get-FileHash .\CodexTunnel-v3.0.2.exe -Algorithm SHA256
 ```
 
 将输出与 Release 的 `SHA256SUMS.txt` 对照。当前构建没有 Authenticode 数字签名；下载应使用本仓库的 Release 页面。
@@ -59,7 +59,7 @@ Start-Service ssh-agent
 
 ## 运行与升级
 
-直接运行 `dist/CodexTunnel-v3.0.1.exe`，单文件已包含 Python 与 GUI。系统需要 Windows OpenSSH 客户端；有口令的密钥先通过密钥工具页的 Agent 解锁操作加入已启动的 ssh-agent。
+直接运行 `dist/CodexTunnel-v3.0.2.exe`，单文件已包含 Python 与 GUI。系统需要 Windows OpenSSH 客户端；有口令的密钥先通过密钥工具页的 Agent 解锁操作加入已启动的 ssh-agent。
 
 配置位于当前用户 `AppData/CodexTunnel/config.json`。旧版配置会迁移到 schema 3；首次保存迁移前保留带内容摘要的 `.v2-*.bak`。全局偏好独立存储，旧版 EXE 不能完整识别新增规则与全局偏好，回退前保留当前配置并使用旧格式备份。
 
@@ -141,7 +141,7 @@ python -m unittest discover -s tests -p test_*.py -v
 python tests/visual_smoke.py
 python tests/workspace_visual_smoke.py
 python build_exe.py
-.\dist\CodexTunnel-v3.0.1.exe --smoke-test-report .\artifacts\exe-smoke.json
+.\dist\CodexTunnel-v3.0.2.exe --smoke-test-report .\artifacts\exe-smoke.json
 ```
 
 构建先执行全部回归测试，生成图标并保留旧 EXE，再输出独立版本文件并尝试原子更新 `dist/CodexTunnel.exe`。旧通用文件被占用时仍保留新版版本化输出。SHA256SUMS.txt 与 release.json 记录实际文件内容、版本和是否更新通用名称。默认不复制桌面。
@@ -242,4 +242,5 @@ python main.py
 ## 安全与问题反馈
 
 查看 [安全审查记录](SECURITY_REVIEW.md)、[版本记录](CHANGELOG.md) 和 [功能评估](FEATURE_ASSESSMENT.md)。提交问题时说明软件版本、Windows 版本、页面、操作步骤和脱敏日志；截图和配置分享文件也需要检查服务器地址、用户名和路径。不要在 Issue 中粘贴私钥、密码或控制 API token。
+
 
