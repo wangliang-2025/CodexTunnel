@@ -1,0 +1,41 @@
+# Python and local environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.env.*
+# Generated builds, private backups, logs and screenshots
+build/
+dist/
+releases/
+artifacts/
+*.log
+*.bak
+*.pending
+*.tmp
+# User configuration and authentication material
+config.json
+config.local.*
+*.local.json
+*.share.json
+.ssh/
+.aws/
+.codex/
+.agents/
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+known_hosts*
+authorized_keys*
+# Legacy personal launcher and unused artwork
+start-codex-tunnel.bat
+assets/mascot.png
+# Editor and operating system files
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
