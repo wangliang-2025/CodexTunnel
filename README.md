@@ -175,10 +175,6 @@ python build_exe.py
 
 ![连接概览](docs/images/overview.png)
 
-![多端口转发管理](docs/images/forwards.png)
-
-![诊断与监控](docs/images/monitor.png)
-
 ## 配置存储、迁移与隐私
 
 当前用户配置文件位于 `%APPDATA%\CodexTunnel\config.json`。其中保存服务器地址、用户名、端口、私钥文件引用及偏好。它是本机配置文件，应按个人资料保护，不能直接当作公开示例上传。
