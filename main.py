@@ -36,6 +36,14 @@ def ensure_single_instance():
     return handle
 
 def main():
+    # PyInstaller's bundled Tcl/Tk hook can be overridden by a managed
+    # Python runtime during startup; set the locations again immediately
+    # before importing or constructing the GUI.
+    if getattr(sys, 'frozen', False):
+        bundle=Path(getattr(sys, '_MEIPASS', Path(sys.executable).parent))
+        os.environ['PATH']=str(bundle)+os.pathsep+os.environ.get('PATH','')
+        os.environ['TCL_LIBRARY']=str(bundle/'_tcl_data')
+        os.environ['TK_LIBRARY']=str(bundle/'_tk_data')
     if '--smoke-test-report' in sys.argv:
         index=sys.argv.index('--smoke-test-report')
         if index+1>=len(sys.argv):

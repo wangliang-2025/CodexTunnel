@@ -101,7 +101,7 @@ class App(ctk.CTk):
   ctk.CTkFrame(sidebar,fg_color='transparent',height=1).pack(fill='both',expand=True)
   self.sidebar_state = self.label(sidebar,'●  待连接',14,True); self.sidebar_state.pack(pady=(12,6))
   self.button(sidebar,'切换明暗',self._theme).pack(fill='x',padx=16,pady=(4,12))
-  self.label(sidebar,'版本  3.0.2',12,muted=True).pack(pady=(0,22))
+  self.label(sidebar,'版本  3.3',12,muted=True).pack(pady=(0,22))
   container = ctk.CTkFrame(self,fg_color='transparent'); container.grid(row=0,column=1,sticky='nsew',padx=26,pady=24)
   container.grid_columnconfigure(0,weight=1); container.grid_rowconfigure(0,weight=1)
   self.pages = {}
