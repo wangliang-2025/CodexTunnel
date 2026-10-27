@@ -23,9 +23,15 @@ def ensure_single_instance():
         kernel.CloseHandle(handle)
         import tkinter as tk
         from tkinter import messagebox
-        root=tk.Tk(); root.withdraw()
-        messagebox.showinfo('已在运行','CodexTunnel 已经运行，请从右下角托盘打开窗口。',parent=root)
-        root.destroy()
+        # A packaged runtime can occasionally lack Tcl/Tk resources. The
+        # mutex result is still authoritative; failing to show the hint must
+        # not turn a normal second-launch check into a crash.
+        try:
+            root=tk.Tk(); root.withdraw()
+            messagebox.showinfo('已在运行','CodexTunnel 已经运行，请从右下角托盘打开窗口。',parent=root)
+            root.destroy()
+        except tk.TclError:
+            pass
         return False
     return handle
 

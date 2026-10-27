@@ -36,7 +36,7 @@ class NetworkWatcher:
         self._thread=threading.Thread(target=self._run,daemon=True,name='NetworkWatcher'); self._thread.start()
     def _run(self):
         previous=time.monotonic(); due=None
-        while not self._stop.wait(.5):
+        while not self._stop.wait(1.0):
             now=time.monotonic()
             if now-previous>8: self._changed.set()  # Recheck after suspend/resume or long scheduler pause.
             previous=now

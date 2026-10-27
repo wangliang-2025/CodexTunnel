@@ -60,7 +60,7 @@ class App(ctk.CTk):
    try:
     self.tray.start(); self.tray_available = True
    except Exception as exc: self._log('WARN',f'托盘不可用：{exc}')
-  self.after(60,self._drain); self.after(500,self._tick)
+  self.after(100,self._drain); self.after(500,self._tick)
   self._log('INFO','准备就绪。请先开启本地代理，并配置 SSH 公钥或 Agent 登录。')
   if self.cfg_mgr.load_warning:
    self._diag(dict(title='配置读取提示',reason=self.cfg_mgr.load_warning,solution='保存时会保留原文件备份。'))
@@ -244,7 +244,7 @@ class App(ctk.CTk):
     else: self._reset_test()
     self.test_btn.configure(text='验证外网',state='normal'); self.target_menu.configure(state='normal')
     self._log('SUCCESS' if ok else 'WARN',msg)
-  self.after(60,self._drain)
+  self.after(100,self._drain)
 
  def _show(self,key):
   if key=='settings' and self.daemon.is_running():
@@ -358,7 +358,12 @@ class App(ctk.CTk):
    label.configure(text='●  '+text,text_color=C['green' if value is True else 'red' if value is False and not neutral else 'muted'])
  def _reset_test(self): self.e2e_label.configure(text='尚未验证',text_color=C['muted'])
  def _diag(self,diag):
+  if diag.get('clear'):
+   self.diag_frame.pack_forget()
+   return
   text=f"{diag['title']}  ·  {diag.get('reason','')}\n{diag.get('solution','')}"
+  if diag.get('evidence'):
+   text += '\nSSH 原始摘要：' + diag['evidence']
   if self.config.mask_logs: text=SystemHelper.mask_sensitive_text(text,self.config)
   self.diag_label.configure(text=text)
   if not self.diag_frame.winfo_manager(): self.diag_frame.pack(fill='x',pady=(0,10),before=self.hero_card)

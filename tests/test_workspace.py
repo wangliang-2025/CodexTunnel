@@ -266,7 +266,7 @@ class NativeKeyWorkflowTests(unittest.TestCase):
    self.assertTrue(commands);self.assertNotIn('-N',commands[0]);self.assertNotIn('-P',commands[0])
    checker=Path(folder)/'acl.ps1'
    checker.write_text("param([string]$KeyPath)\n$ErrorActionPreference='Stop'\n$acl=Get-Acl -LiteralPath $KeyPath\n@{sids=@($acl.Access | ForEach-Object {$_.IdentityReference.Translate([System.Security.Principal.SecurityIdentifier]).Value})}|ConvertTo-Json -Compress",encoding='utf-8')
-   code,out,err=CommandRunner.run(['powershell.exe','-NoProfile','-NonInteractive','-File',str(checker),'-KeyPath',str(target)],timeout=8)
+   code,out,err=CommandRunner.run(['powershell.exe','-NoProfile','-NonInteractive','-ExecutionPolicy','Bypass','-File',str(checker),'-KeyPath',str(target)],timeout=8)
    self.assertEqual(code,0,err);data=json.loads(out);self.assertTrue(data['sids']);self.assertFalse(set(data['sids']) & {'S-1-1-0','S-1-5-32-545','S-1-5-11'});self.assertTrue(all(sid.startswith('S-1-5-') for sid in data['sids']))
    code,whoami,err=CommandRunner.run(['whoami.exe','/user','/fo','csv','/nh'])
    import re

@@ -57,7 +57,7 @@ class TunnelManager:
             if not daemon or daemon.current_state!='CONNECTED': return False
             self._due[ident]=0; self._manual.add(ident); return True
     def _scheduler(self):
-        while not self._stop.wait(.5):
+        while not self._stop.wait(1.0):
             if not self.preferences.probe_enabled and not self._manual: continue
             with self._lock:
                 for ident,daemon in list(self.daemons.items()):

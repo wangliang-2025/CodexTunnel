@@ -208,7 +208,7 @@ class TunnelDaemon:
             deadline = time.monotonic()+config.connect_timeout+5
             last_local_probe = time.monotonic()
             announced = False
-            while not self._stop_event.wait(0.1):
+            while not self._stop_event.wait(0.2):
                 if proc.poll() is not None:
                     break
                 if ready.is_set() and not announced:
@@ -218,6 +218,9 @@ class TunnelDaemon:
                     self.session_count+=1
                     self.last_connected_at=time.time()
                     self._last_diagnostic = None
+                    # Clear a previous failed-attempt card as soon as this SSH run
+                    # has confirmed every requested forward.
+                    self._notify(self.on_diagnostic, {'clear': True})
                     self._health(tunnel=True)
                     self._set_state(self.STATE_CONNECTED,f'{len(rules)} 条转发监听已确认 · 业务健康单独探测')
                     self._log('SUCCESS',f'全部转发监听已确认，共 {len(rules)} 条规则')

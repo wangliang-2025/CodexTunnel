@@ -155,7 +155,7 @@ class SystemHelper:
                 if stop_event is not None:
                     stop_event.wait(0.1)
                 else:
-                    time.sleep(0.1)
+                    time.sleep(0.2)
             for thread in readers:
                 thread.join(timeout=2)
             if overflow.is_set():

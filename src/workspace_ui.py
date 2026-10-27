@@ -35,7 +35,7 @@ def workspace_app(Base,C):
    self._build_workspace(); self._populate(); self._populate_preferences()
    ctk.set_appearance_mode(self.preferences.theme_mode)
    self._update_watcher()
-   self.after(250,self._workspace_tick)
+   self.after(500,self._workspace_tick)
    if self.runtime_enabled:
     self.after(self.preferences.startup_delay*1000,self._auto_start)
     if self.preferences.start_in_tray and self.tray_available: self.after(600,self.withdraw)
@@ -538,7 +538,7 @@ def workspace_app(Base,C):
     if message and self.runtime_enabled:
      # Generic content respects privacy and a single background worker is bounded by _async.
      self._async('toast',lambda cfg,stop,m=message:ToastService.send('CodexTunnel',m,stop))
-   self.after(250,self._workspace_tick)
+   self.after(500,self._workspace_tick)
   def _close(self):
    if self.preferences.minimize_to_tray and self.tray_available:self.withdraw()
    else:self._exit()

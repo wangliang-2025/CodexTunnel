@@ -84,9 +84,31 @@ class SecurityTests(unittest.TestCase):
   cfg=replace(TunnelConfig(),key_file_path='C:\\secret\\id_ed25519')
   text=SystemHelper.mask_sensitive_text(f'{cfg.username}@{cfg.server_host} {cfg.key_file_path} 2001:db8::1',cfg)
   for secret in [cfg.username,cfg.server_host,cfg.key_file_path,'2001:db8::1']: self.assertNotIn(secret,text)
+ def test_success_clears_previous_diagnostic(self):
+  events=[]
+  daemon=TunnelDaemon(on_diagnostic=lambda value: events.append(value))
+  daemon._last_diagnostic=('旧','错误')
+  daemon.on_diagnostic({'clear':True})
+  self.assertEqual(events,[{'clear':True}])
+
  def test_diagnostic_no_destructive_fix(self):
   for error in ['remote port forwarding failed','Host key verification failed','Permission denied']:
    diag=NetworkProbes.diagnose_error(error,17897,'host','user'); self.assertIsNone(diag['action_command']); self.assertTrue(diag['fatal'])
+ def test_diagnostic_distinguishes_remote_port_causes(self):
+  occupied=NetworkProbes.diagnose_error('bind: Address already in use',17897,'host','user')
+  self.assertEqual(occupied['kind'],'remote_port_in_use')
+  self.assertIn('17897',occupied['reason'])
+  self.assertIn('Address already in use',occupied['evidence'])
+  generic=NetworkProbes.diagnose_error('remote port forwarding failed for listen port 17897',17897,'host','user')
+  self.assertEqual(generic['kind'],'remote_forward_failed')
+  policy=NetworkProbes.diagnose_error('open failed: administratively prohibited',17897,'host','user')
+  self.assertEqual(policy['kind'],'forwarding_policy')
+  self.assertNotEqual(generic['kind'],policy['kind'])
+  mixed=NetworkProbes.diagnose_error('remote port forwarding failed for listen port 17897\nopen failed: administratively prohibited',17897,'host','user')
+  self.assertEqual(mixed['kind'],'forwarding_policy')
+ def test_diagnostic_evidence_is_bounded(self):
+  diag=NetworkProbes.diagnose_error('remote port forwarding failed for listen port 17897\n'+'x'*1000,17897,'host','user')
+  self.assertLessEqual(len(diag['evidence']),320)
  def test_forward_confirmation_requires_exact_mapping(self):
   cfg=TunnelConfig(); valid='debug1: remote forward success for: listen 127.0.0.1:17897, connect 127.0.0.1:7897'
   self.assertTrue(TunnelDaemon.forwarding_confirmed(valid,cfg))
